@@ -13,5 +13,7 @@ The version tag has to be semantic versioning, i.e. x.x.x (major.minor.patch), a
 ## Usage
 Import this action into your workflow using `uses` key:
 ```
-uses: compliance-trestle/trestle-assemble-release
+- name: trestle-assemble-release
+  uses: compliance-trestle/trestle-assemble-release@1.0.1
+
 ```
