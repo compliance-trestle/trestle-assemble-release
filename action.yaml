@@ -53,10 +53,10 @@ jobs:
           pip install python-semantic-release
           touch setup.cfg
           list=``
-          filenames1=(`ls */*/*/metadata.json`)
-          filenames2=(`ls */*/*.json`)
-          filenames3=(`ls */*/*/metadata/*.json`)
-          filenames4=(`ls dist/*/*.json`)
+          filenames1=(`ls */*/*/metadata.json 2>/dev/null`)
+          filenames2=(`ls */*/*.json 2>/dev/null`)
+          filenames3=(`ls */*/*/metadata/*.json 2>/dev/null`)
+          filenames4=(`ls dist/*/*.json 2>/dev/null`)
           allfiles=( "${filenames1[@]}" "${filenames2[@]}" "${filenames3[@]}" "${filenames4[@]}" )
           for eachfile in ${allfiles[@]}; do list="${list}$eachfile:\\\"version\\\": \"(\d+\.\d+[\.d+]?)\","; done
           echo $'[semantic_release]\nversion_pattern ='"${list%?}">setup.cfg
