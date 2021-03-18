@@ -54,7 +54,7 @@ jobs:
           touch setup.cfg
           list=``
           filenames=`ls dist/*/*.json`
-          for eachfile in $filenames; do list="${list}$eachfile:\\\"version\\\": \"(\d+\.\d+[\.d+]?)\","; done
-          echo $'[semantic_release]\nversion_pattern ='"${list%?}">setup.cfg
+          for eachfile in $filenames; do list="${list}$eachfile:\\\"version\\\": \"(\d+\.\d+\.\d+)\","; done
+          echo $'[semantic_release]\nbranch = main\nbuild_command=false\nupload_to_pypi=false\nremove_dist=false\nversion_pattern ='"${list%?}">setup.cfg
           cat setup.cfg
           semantic-release publish
