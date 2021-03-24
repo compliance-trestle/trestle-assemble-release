@@ -10,56 +10,63 @@ on:
 runs:
   using: "composite"
   steps:
-    run: 
-    shell: bash
-    uses: actions/checkout@v2
+    - run: 
+      shell: bash
+      uses: actions/checkout@v2
 
-    name: Set up Python
-    uses: actions/setup-python@v2
-    with:
-      python-version: 3.8
-    run:
-    shell: bash
+    - run: echo "installing python"
+      shell: bash
+      name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
 
-    name: Install trestle
-    run: pip install compliance-trestle
-    shell: bash
+    
+    - run: pip install compliance-trestle
+      shell: bash
+      name: Install trestle
 
-    name: Assemble
-    run: |
-      echo $(ls)
-      trestle assemble catalog -t
-      trestle assemble profile -t
-      trestle assemble target-definition -t
-      trestle assemble component-definition -t
-      trestle assemble system-security-plan -t
-      trestle assemble assessment-plan -t
-      trestle assemble assessment-results -t
-      trestle assemble plan-of-action-and-milestones -t
-    shell: bash
+    
+    - run: |
+        echo $(ls)
+        trestle assemble catalog -t
+        trestle assemble profile -t
+        trestle assemble target-definition -t
+        trestle assemble component-definition -t
+        trestle assemble system-security-plan -t
+        trestle assemble assessment-plan -t
+        trestle assemble assessment-results -t
+        trestle assemble plan-of-action-and-milestones -t
+      shell: bash
+      name: Assemble
 
-    name: Push commit
-    run: |
-      git config --global user.name 'trestle-actions-bot'
-      git config --global user.email 'trestle-bot@ibm.com'
-      git add -A
-      git commit -am "Automated assemble"
-      git push origin main
-    shell: bash
+    -  
+    - run: |
+        git config --global user.name 'trestle-actions-bot'
+        git config --global user.email 'trestle-bot@ibm.com'
+        git add -A
+        git commit -am "Automated assemble"
+        git push origin main
+      shell: bash
+      name: Push commit
 
-    name: Semantic release
-    run:  |
-      pip install python-semantic-release
-      touch setup.cfg
-      list=``
-      filenames1=(`ls */*/*/metadata.json 2>/dev/null || true`)
-      filenames2=(`ls */*/*.json 2>/dev/null || true`)
-      filenames3=(`ls */*/*/metadata/*.json 2>/dev/null || true`)
-      filenames4=(`ls dist/*/*.json 2>/dev/null || true`)
-      allfiles=( "${filenames1[@]}" "${filenames2[@]}" "${filenames3[@]}" "${filenames4[@]}" )
-      for eachfile in ${allfiles[@]}; do list="${list}$eachfile:\\\"version\\\": \"(\d+\.\d+\.\d+)\","; done
-      echo $'[semantic_release]\nbranch = main\nbuild_command=\nupload_to_pypi=false\nremove_dist=false\nupload_to_release=True\nversion_source=commit\nversion_pattern ='"${list%?}">setup.cfg
-      cat setup.cfg
-      echo `ls`
-      semantic-release publish
-    shell: bash
+    
+    - run:  |
+        pip install python-semantic-release
+        touch setup.cfg
+        list=``
+        filenames1=(`ls */*/*/metadata.json 2>/dev/null || true`)
+        filenames2=(`ls */*/*.json 2>/dev/null || true`)
+        filenames3=(`ls */*/*/metadata/*.json 2>/dev/null || true`)
+        filenames4=(`ls dist/*/*.json 2>/dev/null || true`)
+        allfiles=( "${filenames1[@]}" "${filenames2[@]}" "${filenames3[@]}" "${filenames4[@]}" )
+        for eachfile in ${allfiles[@]}; do list="${list}$eachfile:\\\"version\\\": \"(\d+\.\d+\.\d+)\","; done
+        echo $'[semantic_release]\nbranch = main\nbuild_command=\nupload_to_pypi=false\nremove_dist=false\nupload_to_release=True\nversion_source=commit\nversion_pattern ='"${list%?}">setup.cfg
+        cat setup.cfg
+        echo `ls`
+        semantic-release publish
+      shell: bash
+      name: Semantic release
+      
+    - run: ${{ github.action_path }}/goodbye.sh
+      shell: bash
