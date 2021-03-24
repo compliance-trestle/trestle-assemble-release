@@ -10,6 +10,9 @@ If the project is not a trestle project (https://github.com/IBM/compliance-trest
 The version of the trestle project is identified by the `version` key in each of the top level OSCAL models, e.g. `catalog.json`. Having different versions on different models will result in version conflict and action will fail.
 The version tag has to be semantic versioning, i.e. x.x.x (major.minor.patch), and the version bump is automatically triggered by commit messages, following Angular Commit convention here https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit .
 
+1. Must checkout the trestle git project. (uses: actions/checkout@v2)
+2. Must install python. (uses: actions/setup-python@v2)
+
 ## Known Issues/ Work in Progress
 1. Workflow is hardcoded to assemble json files only. In near future, it should accept an configuration for desired file type and/or figure out file type from the source models.
 
@@ -28,13 +31,16 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
       steps:
+          # Pre-requisite 1
         - name: Checkout git project
           uses: actions/checkout@v2
-
+          # Pre-requisite 2
         - name: Set up Python
           uses: actions/setup-python@v2
           with:
             python-version: 3.8
+            
+            
         - name: trestle-assemble-release
           uses: compliance-trestle/trestle-assemble-release@1.0.1
 
