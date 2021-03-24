@@ -7,56 +7,51 @@ on:
       - main
     types: [ closed ]
 
-jobs:
-  merge_job:
-    # this job will only run if the PR has been merged
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    runs:
-      using: "composite"
-      steps:
-        - uses: actions/checkout@v2
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
 
-        - name: Set up Python
-          uses: actions/setup-python@v2
-          with:
-            python-version: 3.8
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
 
-        - name: Install trestle
-          run: pip install compliance-trestle
+    - name: Install trestle
+      run: pip install compliance-trestle
 
-        - name: Assemble
-          run: |
-            echo $(ls)
-            trestle assemble catalog -t
-            trestle assemble profile -t
-            trestle assemble target-definition -t
-            trestle assemble component-definition -t
-            trestle assemble system-security-plan -t
-            trestle assemble assessment-plan -t
-            trestle assemble assessment-results -t
-            trestle assemble plan-of-action-and-milestones -t
+    - name: Assemble
+      run: |
+        echo $(ls)
+        trestle assemble catalog -t
+        trestle assemble profile -t
+        trestle assemble target-definition -t
+        trestle assemble component-definition -t
+        trestle assemble system-security-plan -t
+        trestle assemble assessment-plan -t
+        trestle assemble assessment-results -t
+        trestle assemble plan-of-action-and-milestones -t
 
-        - name: Push commit
-          run: |
-            git config --global user.name 'Nebula'
-            git config --global user.email 'your-username@users.noreply.github.com'
-            git add -A
-            git commit -am "Automated assemble"
-            git push origin main
+    - name: Push commit
+      run: |
+        git config --global user.name 'trestle-actions-bot'
+        git config --global user.email 'trestle-bot@ibm.com'
+        git add -A
+        git commit -am "Automated assemble"
+        git push origin main
 
-        - name: Semantic release
-          run:  |
-            pip install python-semantic-release
-            touch setup.cfg
-            list=``
-            filenames1=(`ls */*/*/metadata.json 2>/dev/null || true`)
-            filenames2=(`ls */*/*.json 2>/dev/null || true`)
-            filenames3=(`ls */*/*/metadata/*.json 2>/dev/null || true`)
-            filenames4=(`ls dist/*/*.json 2>/dev/null || true`)
-            allfiles=( "${filenames1[@]}" "${filenames2[@]}" "${filenames3[@]}" "${filenames4[@]}" )
-            for eachfile in ${allfiles[@]}; do list="${list}$eachfile:\\\"version\\\": \"(\d+\.\d+\.\d+)\","; done
-            echo $'[semantic_release]\nbranch = main\nbuild_command=\nupload_to_pypi=false\nremove_dist=false\nupload_to_release=True\nversion_source=commit\nversion_pattern ='"${list%?}">setup.cfg
-            cat setup.cfg
-            echo `ls`
-            semantic-release publish
+    - name: Semantic release
+      run:  |
+        pip install python-semantic-release
+        touch setup.cfg
+        list=``
+        filenames1=(`ls */*/*/metadata.json 2>/dev/null || true`)
+        filenames2=(`ls */*/*.json 2>/dev/null || true`)
+        filenames3=(`ls */*/*/metadata/*.json 2>/dev/null || true`)
+        filenames4=(`ls dist/*/*.json 2>/dev/null || true`)
+        allfiles=( "${filenames1[@]}" "${filenames2[@]}" "${filenames3[@]}" "${filenames4[@]}" )
+        for eachfile in ${allfiles[@]}; do list="${list}$eachfile:\\\"version\\\": \"(\d+\.\d+\.\d+)\","; done
+        echo $'[semantic_release]\nbranch = main\nbuild_command=\nupload_to_pypi=false\nremove_dist=false\nupload_to_release=True\nversion_source=commit\nversion_pattern ='"${list%?}">setup.cfg
+        cat setup.cfg
+        echo `ls`
+        semantic-release publish
