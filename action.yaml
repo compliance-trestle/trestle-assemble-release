@@ -27,8 +27,7 @@ runs:
         trestle assemble plan-of-action-and-milestones -t
       shell: bash
       name: Assemble
-
-    -  
+ 
     - run: |
         git config --global user.name 'trestle-actions-bot'
         git config --global user.email 'trestle-bot@ibm.com'
