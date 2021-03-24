@@ -20,9 +20,12 @@ Import this action into your workflow using `uses` key:
 on:
   pull_request:
     branch: main
+    # Run only for closed PR
+    types: [ closed ]
 
 jobss:
   merge_job:
+    # Run only if PR is merged into Main
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
       steps:
