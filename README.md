@@ -22,7 +22,7 @@ on:
     # Run only for closed PR
     types: [ closed ]
 
-jobss:
+jobs:
   merge_job:
     # Run only if PR is merged into Main
     if: github.event.pull_request.merged == true
