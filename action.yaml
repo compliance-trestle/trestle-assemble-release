@@ -52,8 +52,6 @@ runs:
         cat setup.cfg
         echo `ls`
         semantic-release publish
-      shell: bash
-      name: Semantic release
       
-    - run: ${{ github.action_path }}/goodbye.sh
+    - run: sudo ${{ github.action_path }}/goodbye.sh
       shell: bash
