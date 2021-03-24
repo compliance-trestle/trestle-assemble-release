@@ -9,19 +9,7 @@ on:
 
 runs:
   using: "composite"
-  steps:
-    - run: 
-      shell: bash
-      uses: actions/checkout@v2
-
-    - run: echo "installing python"
-      shell: bash
-      name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-
-    
+  steps:    
     - run: pip install compliance-trestle
       shell: bash
       name: Install trestle
