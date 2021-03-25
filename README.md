@@ -19,6 +19,7 @@ The version tag has to be semantic versioning, i.e. x.x.x (major.minor.patch), a
 ## Usage
 Import this action into your workflow using `uses` key:
 ```
+name: assemble-release
 on:
   pull_request:
     branch: main
@@ -30,18 +31,18 @@ jobs:
     # Run only if PR is merged into Main
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-      steps:
-          # Pre-requisite 1
-        - name: Checkout git project
-          uses: actions/checkout@v2
-          # Pre-requisite 2
-        - name: Set up Python
-          uses: actions/setup-python@v2
-          with:
-            python-version: 3.8
-            
-            
-        - name: trestle-assemble-release
-          uses: compliance-trestle/trestle-assemble-release@1.0.1
+    steps:
+        # Pre-requisite 1
+      - name: Checkout git project
+        uses: actions/checkout@v2
+        # Pre-requisite 2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+
+      - name: trestle-assemble-release
+        uses: compliance-trestle/trestle-assemble-release@2.1.0
 
 ```
