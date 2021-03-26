@@ -1,6 +1,12 @@
-name: Close Pull Request
-
+name: trestle-assemble-release
 # only trigger on pull request closed events
+author: Nebula Alam(https://github.com/aNebula)
+description: On merge of PR to main branch, assemble oscal models, bump version and release
+
+branding:
+  icon: package
+  color: blue
+
 on:
   pull_request:
     branches : 
