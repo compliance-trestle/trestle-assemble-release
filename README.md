@@ -8,7 +8,7 @@ This actions is triggered when a pull request is merged into the main branch.
 ## Requirements
 If the project is not a trestle project (https://github.com/IBM/compliance-trestle), this action will fail. Hence, the top level source directory must be a trestle project.
 The version of the trestle project is identified by the `version` key in each of the top level OSCAL models, e.g. `catalog.json`. Having different versions on different models will result in version conflict and action will fail.
-The version tag has to be semantic versioning, i.e. x.x.x (major.minor.patch), and the version bump is automatically triggered by commit messages, following Angular Commit convention here https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit .
+The version tag has to be semantic versioning, i.e. x.x.x (major.minor.patch), and the version bump is automatically triggered by commit messages, following Angular Commit convention here https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits .
 
 1. Must checkout the trestle git project. (uses: actions/checkout@v2)
 2. Must install python. (uses: actions/setup-python@v2)
@@ -43,6 +43,6 @@ jobs:
 
 
       - name: trestle-assemble-release
-        uses: compliance-trestle/trestle-assemble-release@2.1.0
+        uses: compliance-trestle/trestle-assemble-release@2.2.0
 
 ```
